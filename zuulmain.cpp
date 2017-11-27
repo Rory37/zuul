@@ -27,7 +27,8 @@ int main() {
   zuulroom* r13 = new zuulroom();//Creates new room
   zuulroom* r14 = new zuulroom();//Creates new room
   zuulroom* r15 = new zuulroom();//Creates new room
-  
+  zuulroom* i = new zuulroom();//Creates a inventory room
+  zuulroom* d = new zuulroom(); //A room that always results in death
   //Mine Entrance
   char* n1 = new char[80]; //Creates pointer to array
   strcpy (n1, "Mine Entrance");//points to name
@@ -56,9 +57,6 @@ int main() {
   char* d2ir2 = new char[80]; //direction corresponding with room(pointer)
   strcpy (d2ir2, "WEST"); //Puts direction in array of the pointer
   m2 -> insert(pair<char*,zuulroom*>(d2ir2, r4));//adds the direction and room to the map (supply room)
-  char* d2ir3 = new char[80]; //direction corresponding with room(pointer)
-  strcpy (d2ir3, "SOUTH"); //Puts direction in array of the pointer
-  m2 -> insert(pair<char*,zuulroom*>(d2ir3, r1));//adds the direction and room to the map (mine entrance)
   char* d2ir4 = new char[80]; //direction corresponding with room(pointer)
   strcpy (d2ir4, "EAST"); //Puts direction in array of the pointer
   m2 -> insert(pair<char*,zuulroom*>(d2ir4, r5));//adds the direction and room to the map (Mine Branch)
@@ -69,8 +67,8 @@ int main() {
   char* n3 = new char[80]; //Creates pointer to array
   strcpy (n3, "Elevator");//points to name
   r3 -> setTitle(n3);//sets name
-  char* d3 = new char[80]; //Creates pointer to array
-  strcpy (d3, "The elevator \033[33mcrashes\033[0m! You miraculously survive, but the only way out is a door 10 feet over your head");//points to description
+  char* d3 = new char[120]; //Creates pointer to array
+  strcpy (d3, "The elevator \033[33mcrashes\033[0m! You miraculously survive, but the closest exit is ten feet above your head");//points to description
   r3 -> setDes(d3);//sets description
   map<char*, zuulroom*>* m3 = new map<char*, zuulroom*>;//creates a new map pointer
   char* d3ir1 = new char[80]; //direction corresponding with room(pointer)
@@ -131,13 +129,16 @@ int main() {
   char* n7 = new char[80]; //Creates pointer to array
   strcpy (n7, "Hole");//points to name
   r7 -> setTitle(n7);//sets name
-  char* d7 = new char[80]; //Creates pointer to array
+  char* d7 = new char[100]; //Creates pointer to array
   strcpy (d7, "You are in a small dusty room with a hole in the ground north of you. You cannot see the bottom");//points to description
   r7 -> setDes(d7);//sets description
   map<char*, zuulroom*>* m7 = new map<char*, zuulroom*>;//creates a new map pointer
   char* d7ir1 = new char[80]; //direction corresponding with room(pointer)
   strcpy (d7ir1, "SOUTH"); //Puts direction in array of the pointer
   m7 -> insert(pair<char*,zuulroom*>(d7ir1, r4));//adds the direction and room to the map (Supply Room)
+  char* d7ir2 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d7ir2, "NORTH"); //Puts direction in array of the pointer
+  m7 -> insert(pair<char*,zuulroom*>(d7ir2, d));//adds the direction and room to the map (Supply Room)
   r7 -> setMap(m7);//sets the map for the room
   roomlist -> push_back(r7);//adds room to vector
 
@@ -187,6 +188,13 @@ int main() {
   i1 -> setName(in1);
   i1 -> setLoc(r1);
   items.push_back(i1);
+
+  //Rope
+  char* in2 = new char [80];
+  strcpy(in2, "ROPE");
+  i2 -> setName(in2);
+  i2 -> setLoc(r7);
+  items.push_back(i2);
   
   bool playing = true;
   zuulroom* curr = r1;//Creates new room that keeps track of current room
@@ -194,6 +202,7 @@ int main() {
     //Prints info about the room
     cout << "You are in the " << curr -> getTitle() << "." << endl;
     cout << curr -> getDes() << endl;
+    
     map<char*, zuulroom*>* curmap = curr -> getMap();//Retrieves room's map
     cout << "Directions: " << endl;
     for(map<char*,zuulroom*>::iterator it = curmap -> begin(); it != curmap -> end(); ++it) {//Goes through entire map
@@ -206,12 +215,46 @@ int main() {
       char* command = new char [80];
       cin.getline(command, 80);//Gets the command
       if (strcmp(command, "NORTH") == 0 || strcmp(command, "SOUTH") == 0 || strcmp(command, "WEST") == 0 || strcmp(command, "EAST") == 0) { //If it is a direction
+	bool cont = true;//The room transition occurs
+	//Special Conditions
+
+	if(strcmp(command, "NORTH") == 0 && curr == r1 && i1 -> getLoc() == i) {//If in first room heading North with key
+	  cout << "The door unlocked! Shortly after walking in though the mine entrance collapsed" << endl;
+	}
 	
-	for(map<char*,zuulroom*>::iterator it = curmap -> begin(); it != curmap -> end(); ++it) {//go through map
-	  if (strcmp(command, it -> first) == 0) { //If the direction matches a key
-	    legal = true; //legal move
-	    curr = it -> second; //changes room
+	else if (strcmp(command, "NORTH") == 0 && curr == r1 && i1 -> getLoc() != i) { //If in first room Northbound without key
+	  cout << "The door is locked" << endl;
+	  cont = false;//Prevents room transition
+	  legal = true;
+	}
+
+	if (strcmp(command, "NORTH") == 0 && curr == r7) {
+	  cout << "As you drop down the hole to your inevitable doom, you consider how stupid you were to jump into it. Good Game! Not!" << endl;
+	}
+
+	if (curr == r3 && strcmp(command, "NORTH") == 0) {//If you entered the elevator
+	  if (i2 -> getLoc() != i) {//If rope is not in inv
+	    cout << "Without a way to climb out, you starve! GG!" << endl;
+	    playing = false;
+	    cont = false;
 	  }
+	  else {
+	    cout << "You make a lasso with the roop, catch a piece of metal, and climb out!" << endl;
+	  }
+	}
+
+	if (cont == true) { //If no special condition stopping transition
+	  for(map<char*,zuulroom*>::iterator it = curmap -> begin(); it != curmap -> end(); ++it) {//go through map
+	    if (strcmp(command, it -> first) == 0) { //If the direction matches a key
+	      legal = true; //legal move
+	      curr = it -> second; //changes room
+	    }
+	  }
+	}
+
+	//More Special conditions
+	if (curr == d) { //If in death room
+	  playing = false;
 	}
       }
 
@@ -219,8 +262,57 @@ int main() {
 	
 	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
 	  if ((*it) -> getLoc() == curr) {
+	    cout << "There is a " << (*it) -> getName() << endl;
+	  }
+	}
+	legal = true;
+      }
+
+      else if (strcmp(command, "TAKE") == 0) {
+	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
+	  if ((*it) -> getLoc() == curr) {
+	    cout << "Do you wish to pickup " << (*it) -> getName() << "(answer Y or N)" << endl;
+	    char yesno;
+	    cin >> yesno;
+	    cin.ignore();
+	    if (yesno == 'Y') {
+	      (*it) -> setLoc(i);
+	    }
+	  }
+	}
+	legal = true;
+      }
+      else if (strcmp(command, "INV") == 0) {
+	cout << "You have: " << endl;
+	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
+	  if ((*it) -> getLoc() == i) {//if it is in inventory room
 	    cout << (*it) -> getName() << endl;
 	  }
+	}
+	legal = true;
+      }
+
+      else if (strcmp(command, "DROP") == 0) {
+	cout << "You have: " << endl;
+	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
+	  if ((*it) -> getLoc() == i) {//if it is in inventory room
+	    cout << (*it) -> getName() << endl;
+	  }
+	}
+	cout << "Enter the Item you want to drop" << endl;
+	char* itemdr = new char [80];
+	cin.getline(itemdr, 80);
+	bool drop = false;
+	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
+	  if ((*it) -> getLoc() == i && strcmp((*it) -> getName(), itemdr) == 0) {//if it is in inventory room and matches name of item to drop
+	      (*it) -> setLoc(curr);
+	      cout << "Item has been dropped" << endl;
+	      drop = true;
+	      
+	  }
+	}
+	if (drop == false) {
+	  cout << "Specified item is not in your inventory" << endl; 
 	}
 	legal = true;
       }
@@ -230,9 +322,10 @@ int main() {
 	cout << "NORTH, SOUTH, EAST, or WEST" << endl;
 	cout << "HELP" << endl;
 	cout << "INSPECT" << endl;
-	cout << "PICKUP" << endl;
+	cout << "TAKE" << endl;
 	cout << "DROP" << endl;
 	cout << "QUIT" << endl;
+	cout << "INV" << endl;
 	legal = true;
       }
       

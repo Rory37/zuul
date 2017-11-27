@@ -6,7 +6,7 @@
 using namespace std; 
 
 void zuulroom::setDes(char* newDes) { //method to create a description for rooms (passes pointer to char array)
-  des = new char[80]; // defines what it is pointing to
+  des = new char[100]; // defines what it is pointing to
   strcpy(des, newDes); //copies description into the other pointer
 }
 
