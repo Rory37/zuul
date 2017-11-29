@@ -29,6 +29,8 @@ int main() {
   zuulroom* r15 = new zuulroom();//Creates new room
   zuulroom* i = new zuulroom();//Creates a inventory room
   zuulroom* d = new zuulroom(); //A room that always results in death
+  zuulroom* g = new zuulroom(); //A room for used up items
+  
   //Mine Entrance
   char* n1 = new char[80]; //Creates pointer to array
   strcpy (n1, "Mine Entrance");//points to name
@@ -111,14 +113,14 @@ int main() {
   //Lower Section
   char* n6 = new char[80]; //Creates pointer to array
   strcpy (n6, "Lower Section");//points to name
-  r6 -> setTitle(n3);//sets name
+  r6 -> setTitle(n6);//sets name
   char* d6 = new char[80]; //Creates pointer to array
   strcpy (d6, "It is yet another dusty room (What a Surprise) with a fork in it");//points to description
   r6 -> setDes(d6);//sets description
   map<char*, zuulroom*>* m6 = new map<char*, zuulroom*>;//creates a new map pointer
   char* d6ir1 = new char[80]; //direction corresponding with room(pointer)
   strcpy (d6ir1, "WEST"); //Puts direction in array of the pointer
-  m6 -> insert(pair<char*,zuulroom*>(d6ir1, r7));//adds the direction and room to the map (Cracked tunnel)
+  m6 -> insert(pair<char*,zuulroom*>(d6ir1, r9));//adds the direction and room to the map (Cracked tunnel)
   char* d6ir2 = new char[80]; //direction corresponding with room(pointer)
   strcpy (d6ir2, "EAST"); //Puts direction in array of the pointer
   m6 -> insert(pair<char*,zuulroom*>(d6ir2, r8));//adds the direction and room to the map (Break Room)
@@ -160,7 +162,7 @@ int main() {
   char* n9 = new char[80]; //Creates pointer to array
   strcpy (n9, "Cracked Tunnel");//points to name
   r9 -> setTitle(n9);//sets name
-  char* d9 = new char[80]; //Creates pointer to array
+  char* d9 = new char[120]; //Creates pointer to array
   strcpy (d9, "You are in a large tunnel. There is a cracked wall to the north and a shaft that seems to be leading up in the south.");//points to description
   r9 -> setDes(d9);//sets description
   map<char*, zuulroom*>* m9 = new map<char*, zuulroom*>;//creates a new map pointer
@@ -170,21 +172,126 @@ int main() {
   char* d9ir2 = new char[80]; //direction corresponding with room(pointer)
   strcpy (d9ir2, "EAST"); //Puts direction in array of the pointer
   m9 -> insert(pair<char*,zuulroom*>(d9ir2, r6));//adds the direction and room to the map (Lower Section)
+  char* d9ir3 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d9ir3, "SOUTH"); //Puts direction in array of the pointer
+  m9 -> insert(pair<char*,zuulroom*>(d9ir3, d));//adds the direction and room to the map (Death)
   r9 -> setMap(m9);//sets the map for the room
   roomlist -> push_back(r9);//adds room to vector
 
+  //Experiment
+  char* n10 = new char[80]; //Creates pointer to array
+  strcpy (n10, "Experiment room");//points to name
+  r10 -> setTitle(n10);//sets name
+  char* d10 = new char[120]; //Creates pointer to array
+  strcpy (d10, "The room has polished metal walls. Beakers of suspicious chemicals are on a table");//points to description
+  r10 -> setDes(d10);//sets description
+  map<char*, zuulroom*>* m10 = new map<char*, zuulroom*>;//creates a new map pointer
+  char* d10ir1 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d10ir1, "NORTH"); //Puts direction in array of the pointer
+  m10-> insert(pair<char*,zuulroom*>(d10ir1, r11));//adds the direction and room to the map (Lava Room)
+  char* d10ir2 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d10ir2, "EAST"); //Puts direction in array of the pointer
+  m10-> insert(pair<char*,zuulroom*>(d10ir2, r13));//adds the direction and room to the map (Bedroom)
+  char* d10ir3 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d10ir3, "SOUTH"); //Puts direction in array of the pointer
+  m10-> insert(pair<char*,zuulroom*>(d10ir3, r9));//adds the direction and room to the map (Cracked Tunnel Wall)
+  r10-> setMap(m10);//sets the map for the room
+  roomlist -> push_back(r10);//adds room to vector
+  
+  //Lava Room
+  char* n11= new char[80]; //Creates pointer to array
+  strcpy (n11, "Lava Room");//points to name
+  r11 -> setTitle(n11);//sets name
+  char* d11 = new char[120]; //Creates pointer to array
+  strcpy (d11, "Its a room with rows of lava on either side.");//points to description
+  r11 -> setDes(d11);//sets description
+  map<char*, zuulroom*>* m9 = new map<char*, zuulroom*>;//creates a new map pointer
+  char* d11ir1 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d11ir1, "NORTH"); //Puts direction in array of the pointer
+  m11 -> insert(pair<char*,zuulroom*>(d11ir1, r12));//adds the direction and room to the map (Experiment Room)
+  r11 -> setMap(m11);//sets the map for the room
+  char* d11ir2 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d11ir2, "SOUTH"); //Puts direction in array of the pointer
+  m11 -> insert(pair<char*,zuulroom*>(d11ir2, r10));//adds the direction and room to the map (Security Room)
+  r11 -> setMap(m11);//sets the map for the room
+  roomlist -> push_back(r9);//adds room to vector
 
+  //Security Room
+  char* n12 = new char[80]; //Creates pointer to array
+  strcpy (n12, "Security room");//points to name
+  r12 -> setTitle(n12);//sets name
+  char* d12 = new char[120]; //Creates pointer to array
+  strcpy (d12, "It's a room filled with computers and a complicated looking keypad");//points to descrip\tion
+  r12 -> setDes(d12);//sets description
+  map<char*, zuulroom*>* m12 = new map<char*, zuulroom*>;//creates a new map pointer
+  char* d12ir1 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d12ir1, "South"); //Puts direction in array of the pointer
+  m12-> insert(pair<char*,zuulroom*>(d12ir1, r11));//adds the direction and room to the map (Lava Room)
+  r12-> setMap(m12);//sets the map for the room
+  roomlist -> push_back(r12);//adds room to vector
+
+  //Bedroom
+  char* n13 = new char[80]; //Creates pointer to array
+  strcpy (n13, "Bedroom");//points to name
+  r13 -> setTitle(n13);//sets name
+  char* d13 = new char[120]; //Creates pointer to array
+  strcpy (d13, "It is a bedroom. It seems like someone actually lives here");//points to descrip\tion
+  r13 -> setDes(d13);//sets description
+  map<char*, zuulroom*>* m13 = new map<char*, zuulroom*>;//creates a new map pointer
+  char* d13ir1 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d13ir1, "NORTH"); //Puts direction in array of the pointer
+  m13-> insert(pair<char*,zuulroom*>(d13ir1, r15));//adds the direction and room to the map (Portal Room)
+  char* d13ir2 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d13ir2, "EAST"); //Puts direction in array of the pointer
+  m13-> insert(pair<char*,zuulroom*>(d13ir2, r14));//adds the direction and room to the map (Vault)
+  char* d13ir3 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d13ir3, "WEST"); //Puts direction in array of the pointer
+  m13-> insert(pair<char*,zuulroom*>(d13ir3, r10));//adds the direction and room to the map (Experiment room)
+  r13-> setMap(m13);//sets the map for the room
+  roomlist -> push_back(r13);//adds room to vector
+
+  //Vault
+  char* n14 = new char[80]; //Creates pointer to array
+  strcpy (n14, "Vault");//points to name
+  r14 -> setTitle(n14);//sets name
+  char* d14 = new char[120]; //Creates pointer to array
+  strcpy (d14, "It's a small safe filled with gold bars");//points to descrip\tion
+  r14 -> setDes(d14);//sets description
+  map<char*, zuulroom*>* m14 = new map<char*, zuulroom*>;//creates a new map pointer
+  char* d14ir1 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d14ir1, "WEST"); //Puts direction in array of the pointer
+  m14-> insert(pair<char*,zuulroom*>(d14ir1, r13));//adds the direction and room to the map (Bedroom)
+  r14-> setMap(m14);//sets the map for the room
+  roomlist -> push_back(r14);//adds room to vector
+
+  //Portal room
+  char* n15 = new char[80]; //Creates pointer to array
+  strcpy (n15, "Portal room");//points to name
+  r15 -> setTitle(n15);//sets name
+  char* d15 = new char[120]; //Creates pointer to array
+  strcpy (d15, "There is a glowing blue portal in the north of the room. A crazed scientist picks up a laser guns and aim");//points to description
+  r15 -> setDes(d15);//sets description
+  map<char*, zuulroom*>* m15 = new map<char*, zuulroom*>;//creates a new map pointer
+  char* d15ir1 = new char[80]; //direction corresponding with room(pointer)
+  strcpy (d15ir1, "NORTH"); //Puts direction in array of the pointer
+  m15-> insert(pair<char*,zuulroom*>(d15ir1, r1));//adds the direction and room to the map (Mine Entrance)
+  r10-> setMap(m10);//sets the map for the room
+  roomlist -> push_back(r10);//adds room to vector
+
+	       
   vector <zuulitem*> items;//Makes vector to hold all items
   zuulitem* i1 = new zuulitem();//Creates new item
   zuulitem* i2 = new zuulitem();//Creates new item
   zuulitem* i3 = new zuulitem();//Creates new item
   zuulitem* i4 = new zuulitem();//Creates new item
   zuulitem* i5 = new zuulitem();//Creates new item
+  zuulitem* i6 = new zuulitem();//Creates new item
+  zuulitem* i7 = new zuulitem();//Creates new item
 
   
   //Key
   char* in1 = new char [80];
-  strcpy(in1, "KEY");
+  strcpy(in1, "Key");
   i1 -> setName(in1);
   i1 -> setLoc(r1);
   items.push_back(i1);
@@ -195,6 +302,41 @@ int main() {
   i2 -> setName(in2);
   i2 -> setLoc(r7);
   items.push_back(i2);
+
+  //TnT
+  char* in3 = new char [80];
+  strcpy(in3, "TnT");
+  i3 ->setName(in3);
+  i3 -> setLoc(r5);
+  items.push_back(i3);
+
+  //Muney
+  char* in4 = new char [80];
+  strcpy(in4, "Gold Bars");
+  i4 ->setName(in4);
+  i4 -> setLoc(r14);
+  items.push_back(i4);
+
+  //Matchbook
+  char* in5 = new char [80];
+  strcpy(in5, "Matchbook");
+  i5 ->setName(in5);
+  i5 -> setLoc(r8);
+  items.push_back(i5);
+
+  //Pickaxe
+  char* in6 = new char [80];
+  strcpy(in6, "Pickaxe");
+  i6 ->setName(in6);
+  i6 -> setLoc(r3);
+  items.push_back(i6);
+
+  //Supicious chemical
+  char* in7 = new char [80];
+  strcpy(in7, "Suspicious Chemical");
+  i7 ->setName(in7);
+  i7 -> setLoc(r10);
+  items.push_back(i7);
   
   bool playing = true;
   zuulroom* curr = r1;//Creates new room that keeps track of current room
@@ -228,8 +370,22 @@ int main() {
 	  legal = true;
 	}
 
+	if(strcmp(command, "NORTH") == 0 && curr == r9 && i6 -> getLoc() == i) {//If in first room heading North with pickaxe
+	  cout << "You break through the cracked wall!" << endl;
+	}
+
+	else if (strcmp(command, "NORTH") == 0 && curr == r9 && i6 -> getLoc() != i) { //If in first room Northbound without pickaxe
+	  cout << "You can't break through the wall. Hint: There is nothing down here. It's gg" << endl;
+	  cont = false;//Prevents room transition
+	  legal = true;
+	  playing = false;
+	}
+
 	if (strcmp(command, "NORTH") == 0 && curr == r7) {
 	  cout << "As you drop down the hole to your inevitable doom, you consider how stupid you were to jump into it. Good Game! Not!" << endl;
+	}
+	if (strcmp(command, "SOUTH") == 0 && curr == r9) {
+	  cout << "You try to climb up the shaft, but right as you reach the top, you slip and fall to your death" << endl;
 	}
 
 	if (curr == r3 && strcmp(command, "NORTH") == 0) {//If you entered the elevator
@@ -237,6 +393,7 @@ int main() {
 	    cout << "Without a way to climb out, you starve! GG!" << endl;
 	    playing = false;
 	    cont = false;
+	    legal = true;
 	  }
 	  else {
 	    cout << "You make a lasso with the roop, catch a piece of metal, and climb out!" << endl;
