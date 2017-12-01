@@ -8,7 +8,7 @@
 using namespace std;
 
 int main() {
-  cout << "It is a stormy night. Raining. More than usual. You have heard of a man with a portal to the \033[34mfuture\033[0m. However, he is a" << endl <<" recluse in a \033[31mvolcano mine\033[0m. So, like any teenager, you head straight to it." << endl;//use Ansi Escape for effects
+  cout << "It is a stormy night. Raining. More than usual. You have heard of a man with a portal to the \033[34mfuture\033[0m. However, he is a" << endl <<" recluse in a \033[31mvolcano mine\033[0m. So, like any teenager, you head straight to it. Also, turn on caps lock" << endl;//use Ansi Escape for effects
 
   //Setting up all the rooms
   vector <zuulroom*>* roomlist = new vector<zuulroom*>(); //makes vector to hold all of the rooms
@@ -205,7 +205,7 @@ int main() {
   char* d11 = new char[120]; //Creates pointer to array
   strcpy (d11, "Its a room with rows of lava on either side.");//points to description
   r11 -> setDes(d11);//sets description
-  map<char*, zuulroom*>* m9 = new map<char*, zuulroom*>;//creates a new map pointer
+  map<char*, zuulroom*>* m11 = new map<char*, zuulroom*>;//creates a new map pointer
   char* d11ir1 = new char[80]; //direction corresponding with room(pointer)
   strcpy (d11ir1, "NORTH"); //Puts direction in array of the pointer
   m11 -> insert(pair<char*,zuulroom*>(d11ir1, r12));//adds the direction and room to the map (Experiment Room)
@@ -225,7 +225,7 @@ int main() {
   r12 -> setDes(d12);//sets description
   map<char*, zuulroom*>* m12 = new map<char*, zuulroom*>;//creates a new map pointer
   char* d12ir1 = new char[80]; //direction corresponding with room(pointer)
-  strcpy (d12ir1, "South"); //Puts direction in array of the pointer
+  strcpy (d12ir1, "SOUTH"); //Puts direction in array of the pointer
   m12-> insert(pair<char*,zuulroom*>(d12ir1, r11));//adds the direction and room to the map (Lava Room)
   r12-> setMap(m12);//sets the map for the room
   roomlist -> push_back(r12);//adds room to vector
@@ -275,7 +275,7 @@ int main() {
   char* d15ir1 = new char[80]; //direction corresponding with room(pointer)
   strcpy (d15ir1, "NORTH"); //Puts direction in array of the pointer
   m15-> insert(pair<char*,zuulroom*>(d15ir1, r1));//adds the direction and room to the map (Mine Entrance)
-  r10-> setMap(m10);//sets the map for the room
+  r15-> setMap(m15);//sets the map for the room
   roomlist -> push_back(r10);//adds room to vector
 
 	       
@@ -291,7 +291,7 @@ int main() {
   
   //Key
   char* in1 = new char [80];
-  strcpy(in1, "Key");
+  strcpy(in1, "KEY");
   i1 -> setName(in1);
   i1 -> setLoc(r1);
   items.push_back(i1);
@@ -305,40 +305,43 @@ int main() {
 
   //TnT
   char* in3 = new char [80];
-  strcpy(in3, "TnT");
+  strcpy(in3, "TNT");
   i3 ->setName(in3);
   i3 -> setLoc(r5);
   items.push_back(i3);
 
   //Muney
   char* in4 = new char [80];
-  strcpy(in4, "Gold Bars");
+  strcpy(in4, "GOLD BARS");
   i4 ->setName(in4);
   i4 -> setLoc(r14);
   items.push_back(i4);
 
   //Matchbook
   char* in5 = new char [80];
-  strcpy(in5, "Matchbook");
+  strcpy(in5, "MATCHBOOK");
   i5 ->setName(in5);
   i5 -> setLoc(r8);
   items.push_back(i5);
 
   //Pickaxe
   char* in6 = new char [80];
-  strcpy(in6, "Pickaxe");
+  strcpy(in6, "PICKAXE");
   i6 ->setName(in6);
-  i6 -> setLoc(r3);
+  i6 -> setLoc(r4);
   items.push_back(i6);
 
   //Supicious chemical
   char* in7 = new char [80];
-  strcpy(in7, "Suspicious Chemical");
+  strcpy(in7, "SUSPICIOUS CHEMICAL");
   i7 ->setName(in7);
   i7 -> setLoc(r10);
   items.push_back(i7);
+
   
   bool playing = true;
+  bool sec = true; //Says if security is enabled or not
+  bool vopen= false; //Says if vault is open
   zuulroom* curr = r1;//Creates new room that keeps track of current room
   while (playing == true) {//exits when won, lost, or quit
     //Prints info about the room
@@ -370,6 +373,26 @@ int main() {
 	  legal = true;
 	}
 
+
+	if (strcmp(command, "EAST") == 0 && curr == r13 && vopen == false) { //If in first room Northbound without key
+	  cout << "There is a metal door that is locked. A pickaxe will not help" << endl;
+	  cont = false;//Prevents room transition
+	  legal = true;
+	}
+
+	if (strcmp(command, "NORTH") == 0 && curr == r15 ) { //If in last room Northbound through portal
+	  cout << "You teleport out of the mine. Apparently it was a teleporter, not a time machine" << endl;
+	  cont = false;//Prevents room transition
+	  legal = true;
+	  if (i4 -> getLoc() == i) {
+	    cout << "You got away with the gold bars. You are rich and have won this game" << endl;
+	  }
+	  else {
+	    cout << "You escaped but got nothing out of it. This is the lame win ending. GG" << endl;
+	  }
+	  playing = false;
+	}
+
 	if(strcmp(command, "NORTH") == 0 && curr == r9 && i6 -> getLoc() == i) {//If in first room heading North with pickaxe
 	  cout << "You break through the cracked wall!" << endl;
 	}
@@ -386,6 +409,13 @@ int main() {
 	}
 	if (strcmp(command, "SOUTH") == 0 && curr == r9) {
 	  cout << "You try to climb up the shaft, but right as you reach the top, you slip and fall to your death" << endl;
+	}
+
+	if (strcmp(command, "NORTH") == 0 && curr == r13 && sec == true) { //If trying to enter portal room with security
+	  cout << "As you walk through the doors, 3 guns swivel and blast you. Inevitably you died. GG." << endl;
+	  cont = false;
+	  playing = false;
+	  legal = true;
 	}
 
 	if (curr == r3 && strcmp(command, "NORTH") == 0) {//If you entered the elevator
@@ -465,9 +495,22 @@ int main() {
 	      (*it) -> setLoc(curr);
 	      cout << "Item has been dropped" << endl;
 	      drop = true;
-	      
 	  }
 	}
+	//Special condition
+	if (drop == true && strcmp(itemdr, i7 -> getName()) == 0 && curr == r12) {//provided chemical is dropped in comp room
+	  sec = false;
+	  i7 -> setLoc(g);
+	  cout << "You dropped the chemicals on the keypad. It might have disabled something" << endl;
+	}
+
+	if (drop == true && strcmp(itemdr, i3 -> getName()) == 0 && curr == r13 && i5 -> getLoc() == i) {//provided TnT is dropped while matchbook is in possesion
+	  vopen = true;
+	  i3 -> setLoc(g);
+	  i5 -> setLoc(g);
+	  cout << "You light the TnT with matches, blowing open the metal door" << endl;
+	}
+	
 	if (drop == false) {
 	  cout << "Specified item is not in your inventory" << endl; 
 	}
