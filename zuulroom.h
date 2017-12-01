@@ -1,4 +1,4 @@
-#include <map>
+#include <map>//has all includes
 #include <iostream>
 #ifndef guard //Note: This guard code is based on wikipedia's Include_Guard page ;
 #define guard
@@ -19,4 +19,4 @@ class zuulroom {
   char* title;//stores title of room
 };
 
-#endif
+#endif//ends include_guard
