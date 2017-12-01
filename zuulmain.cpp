@@ -1,9 +1,15 @@
 #include <iostream>
 #include <map> //includes the map extension
-#include <vector>
+#include <vector> 
 #include <cstring>
-#include "zuulroom.h"
+#include "zuulroom.h"//includes needed headers
 #include "zuulitem.h"
+
+//Zuul
+//By Aidan Derocher
+//12/1/17
+//This is a text based exploration game, with items and a few win and lose conditions. You type a direction to move,
+//and various other commands to progress
 
 using namespace std;
 
@@ -290,56 +296,56 @@ int main() {
 
   
   //Key
-  char* in1 = new char [80];
-  strcpy(in1, "KEY");
-  i1 -> setName(in1);
-  i1 -> setLoc(r1);
-  items.push_back(i1);
+  char* in1 = new char [80]; 
+  strcpy(in1, "KEY"); //creates pointer for name
+  i1 -> setName(in1); //sets name pointer
+  i1 -> setLoc(r1);//set loc pointer mine entrance
+  items.push_back(i1); //adds to vector
 
   //Rope
   char* in2 = new char [80];
-  strcpy(in2, "ROPE");
-  i2 -> setName(in2);
-  i2 -> setLoc(r7);
-  items.push_back(i2);
+  strcpy(in2, "ROPE");//creates pointer for name
+  i2 -> setName(in2);//sets name pointer
+  i2 -> setLoc(r7);//sets loc pointer hole room
+  items.push_back(i2); //adds to vector
 
   //TnT
   char* in3 = new char [80];
-  strcpy(in3, "TNT");
-  i3 ->setName(in3);
-  i3 -> setLoc(r5);
-  items.push_back(i3);
+  strcpy(in3, "TNT");//creates pointer for name
+  i3 ->setName(in3);//sets name pointer
+  i3 -> setLoc(r5);//sets loc pointer mine branch
+  items.push_back(i3);//adds to vector
 
   //Muney
   char* in4 = new char [80];
-  strcpy(in4, "GOLD BARS");
-  i4 ->setName(in4);
-  i4 -> setLoc(r14);
-  items.push_back(i4);
+  strcpy(in4, "GOLD BARS"); //creates name pointer
+  i4 ->setName(in4);//sets name pointer
+  i4 -> setLoc(r14);//set loc pointer vault
+  items.push_back(i4);//adds to vector
 
   //Matchbook
   char* in5 = new char [80];
-  strcpy(in5, "MATCHBOOK");
-  i5 ->setName(in5);
-  i5 -> setLoc(r8);
-  items.push_back(i5);
+  strcpy(in5, "MATCHBOOK");//creates name pointer
+  i5 ->setName(in5);//sets name pointer
+  i5 -> setLoc(r8);//sets loc pointer break room
+  items.push_back(i5); //adds to vector
 
   //Pickaxe
   char* in6 = new char [80];
-  strcpy(in6, "PICKAXE");
-  i6 ->setName(in6);
-  i6 -> setLoc(r4);
-  items.push_back(i6);
+  strcpy(in6, "PICKAXE");//creates name pointer
+  i6 ->setName(in6); //sets name pointer
+  i6 -> setLoc(r4); //sets loc pointer supply room
+  items.push_back(i6);//adds vector
 
   //Supicious chemical
   char* in7 = new char [80];
-  strcpy(in7, "SUSPICIOUS CHEMICAL");
-  i7 ->setName(in7);
-  i7 -> setLoc(r10);
-  items.push_back(i7);
+  strcpy(in7, "SUSPICIOUS CHEMICAL");//creates name pointer
+  i7 ->setName(in7);//sets name pointer
+  i7 -> setLoc(r10);//sets loc pointer experiment room
+  items.push_back(i7);//adds vector
 
   
-  bool playing = true;
+  bool playing = true; //keeps running the program
   bool sec = true; //Says if security is enabled or not
   bool vopen= false; //Says if vault is open
   zuulroom* curr = r1;//Creates new room that keeps track of current room
@@ -370,60 +376,60 @@ int main() {
 	else if (strcmp(command, "NORTH") == 0 && curr == r1 && i1 -> getLoc() != i) { //If in first room Northbound without key
 	  cout << "The door is locked" << endl;
 	  cont = false;//Prevents room transition
-	  legal = true;
+	  legal = true; //makes move valid
 	}
 
 
-	if (strcmp(command, "EAST") == 0 && curr == r13 && vopen == false) { //If in first room Northbound without key
+	if (strcmp(command, "EAST") == 0 && curr == r13 && vopen == false) { //If in bedroom and vault has not been opened
 	  cout << "There is a metal door that is locked. A pickaxe will not help" << endl;
 	  cont = false;//Prevents room transition
-	  legal = true;
+	  legal = true;.//makes move valid
 	}
 
-	if (strcmp(command, "NORTH") == 0 && curr == r15 ) { //If in last room Northbound through portal
+	if (strcmp(command, "NORTH") == 0 && curr == r15 ) { //If in last room Northbound through portal (WIN CON)
 	  cout << "You teleport out of the mine. Apparently it was a teleporter, not a time machine" << endl;
 	  cont = false;//Prevents room transition
-	  legal = true;
-	  if (i4 -> getLoc() == i) {
+	  legal = true;//legal move
+	  if (i4 -> getLoc() == i) {//if you have the gold
 	    cout << "You got away with the gold bars. You are rich and have won this game" << endl;
 	  }
 	  else {
 	    cout << "You escaped but got nothing out of it. This is the lame win ending. GG" << endl;
 	  }
-	  playing = false;
+	  playing = false;//stops game
 	}
 
-	if(strcmp(command, "NORTH") == 0 && curr == r9 && i6 -> getLoc() == i) {//If in first room heading North with pickaxe
+	if(strcmp(command, "NORTH") == 0 && curr == r9 && i6 -> getLoc() == i) {//If in the cracked tunne; room heading North with pickaxe
 	  cout << "You break through the cracked wall!" << endl;
 	}
 
-	else if (strcmp(command, "NORTH") == 0 && curr == r9 && i6 -> getLoc() != i) { //If in first room Northbound without pickaxe
+	else if (strcmp(command, "NORTH") == 0 && curr == r9 && i6 -> getLoc() != i) { //If pickaxe is not brought
 	  cout << "You can't break through the wall. Hint: There is nothing down here. It's gg" << endl;
 	  cont = false;//Prevents room transition
-	  legal = true;
-	  playing = false;
+	  legal = true;//makes move legit
+	  playing = false;//stops the game
 	}
 
-	if (strcmp(command, "NORTH") == 0 && curr == r7) {
+	if (strcmp(command, "NORTH") == 0 && curr == r7) { //if you go north in hole room
 	  cout << "As you drop down the hole to your inevitable doom, you consider how stupid you were to jump into it. Good Game! Not!" << endl;
 	}
-	if (strcmp(command, "SOUTH") == 0 && curr == r9) {
+	if (strcmp(command, "SOUTH") == 0 && curr == r9) {//if you go south in cracked tunnel
 	  cout << "You try to climb up the shaft, but right as you reach the top, you slip and fall to your death" << endl;
 	}
 
 	if (strcmp(command, "NORTH") == 0 && curr == r13 && sec == true) { //If trying to enter portal room with security
 	  cout << "As you walk through the doors, 3 guns swivel and blast you. Inevitably you died. GG." << endl;
-	  cont = false;
-	  playing = false;
-	  legal = true;
+	  cont = false; //doesn't change loc
+	  playing = false;//stops game
+	  legal = true;//move is legal
 	}
 
 	if (curr == r3 && strcmp(command, "NORTH") == 0) {//If you entered the elevator
 	  if (i2 -> getLoc() != i) {//If rope is not in inv
 	    cout << "Without a way to climb out, you starve! GG!" << endl;
-	    playing = false;
-	    cont = false;
-	    legal = true;
+	    playing = false;//stops game
+	    cont = false;//prevent room switch
+	    legal = true;//legal move
 	  }
 	  else {
 	    cout << "You make a lasso with the roop, catch a piece of metal, and climb out!" << endl;
@@ -445,76 +451,76 @@ int main() {
 	}
       }
 
-      else if (strcmp(command, "INSPECT") == 0) {
+      else if (strcmp(command, "INSPECT") == 0) { //Looks for items in the room
 	
-	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
-	  if ((*it) -> getLoc() == curr) {
+	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) { //runs through all the items
+	  if ((*it) -> getLoc() == curr) {//if the item is in current room print it out
 	    cout << "There is a " << (*it) -> getName() << endl;
 	  }
 	}
-	legal = true;
+	legal = true;//legal move
       }
 
-      else if (strcmp(command, "TAKE") == 0) {
-	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
-	  if ((*it) -> getLoc() == curr) {
+      else if (strcmp(command, "TAKE") == 0) { //Will pickup item
+	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {//runs through all items
+	  if ((*it) -> getLoc() == curr) { //If it is in your room
 	    cout << "Do you wish to pickup " << (*it) -> getName() << "(answer Y or N)" << endl;
-	    char yesno;
+	    char yesno; //holds answer
 	    cin >> yesno;
-	    cin.ignore();
-	    if (yesno == 'Y') {
-	      (*it) -> setLoc(i);
+	    cin.ignore();//prevents issues with cin.getline
+	    if (yesno == 'Y') { //if yes
+	      (*it) -> setLoc(i);//put in inv
 	    }
 	  }
 	}
-	legal = true;
+	legal = true; //legal move
       }
-      else if (strcmp(command, "INV") == 0) {
+      else if (strcmp(command, "INV") == 0) {//checks inventory
 	cout << "You have: " << endl;
-	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
+	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {//runs through all items
 	  if ((*it) -> getLoc() == i) {//if it is in inventory room
-	    cout << (*it) -> getName() << endl;
+	    cout << (*it) -> getName() << endl;//prints item
 	  }
 	}
-	legal = true;
+	legal = true;//legal move
       }
 
-      else if (strcmp(command, "DROP") == 0) {
-	cout << "You have: " << endl;
-	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
+      else if (strcmp(command, "DROP") == 0) {//will drop item
+	cout << "You have: " << endl; //prints what you have
+	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {//goes through items
 	  if ((*it) -> getLoc() == i) {//if it is in inventory room
-	    cout << (*it) -> getName() << endl;
+	    cout << (*it) -> getName() << endl; //prints items in inv
 	  }
 	}
 	cout << "Enter the Item you want to drop" << endl;
-	char* itemdr = new char [80];
-	cin.getline(itemdr, 80);
-	bool drop = false;
-	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {
+	char* itemdr = new char [80];//pointer to hold item name
+	cin.getline(itemdr, 80);//enters input in pointer
+	bool drop = false; //defaults to nothing dropped
+	for (vector<zuulitem*>::iterator it = items.begin(); it != items.end(); ++it) {//runs through items
 	  if ((*it) -> getLoc() == i && strcmp((*it) -> getName(), itemdr) == 0) {//if it is in inventory room and matches name of item to drop
-	      (*it) -> setLoc(curr);
+	      (*it) -> setLoc(curr);//sets item in current room
 	      cout << "Item has been dropped" << endl;
-	      drop = true;
+	      drop = true;//says something has been dropped
 	  }
 	}
 	//Special condition
 	if (drop == true && strcmp(itemdr, i7 -> getName()) == 0 && curr == r12) {//provided chemical is dropped in comp room
-	  sec = false;
-	  i7 -> setLoc(g);
+	  sec = false;//security got rid of
+	  i7 -> setLoc(g);//location set into inaccesable room
 	  cout << "You dropped the chemicals on the keypad. It might have disabled something" << endl;
 	}
 
 	if (drop == true && strcmp(itemdr, i3 -> getName()) == 0 && curr == r13 && i5 -> getLoc() == i) {//provided TnT is dropped while matchbook is in possesion
-	  vopen = true;
-	  i3 -> setLoc(g);
+	  vopen = true; //opens vault
+	  i3 -> setLoc(g);//gets rid of both items
 	  i5 -> setLoc(g);
 	  cout << "You light the TnT with matches, blowing open the metal door" << endl;
 	}
 	
-	if (drop == false) {
+	if (drop == false) {//nothing drops
 	  cout << "Specified item is not in your inventory" << endl; 
 	}
-	legal = true;
+	legal = true;//legal move
       }
       
       else if (strcmp(command, "HELP") == 0) {//Prints all commands
@@ -526,15 +532,15 @@ int main() {
 	cout << "DROP" << endl;
 	cout << "QUIT" << endl;
 	cout << "INV" << endl;
-	legal = true;
+	legal = true;//legal move
       }
       
       else if (strcmp(command, "QUIT") == 0) {//Ends the program
-	legal = true;
-	playing = false;
+	legal = true; //legal move
+	playing = false;//ends loop, ending game
       }
 
-      if (legal == false) {
+      if (legal == false) { //if not legal move
 	cout << "The inputted command is invalid" << endl;
       }
     }
