@@ -1,4 +1,4 @@
-#include <iostream>
+#include <iostream> //All includes
 #include <cstring>
 #include "zuulitem.h"
 
@@ -10,13 +10,13 @@ void zuulitem::setName(char* newName) {//Takes in pointer to name of item
 }
 
 char* zuulitem::getName(){ //returns name of item
-  return name;
+  return name; 
 }
 
 void zuulitem::setLoc(zuulroom* newLoc) { //Takes in pointer to room which item will be in
-  loc = newLoc;
+  loc = newLoc;//stores pointer
 }
 
-zuulroom* zuulitem::getLoc() {//returns the location of the item
+zuulroom* zuulitem::getLoc() {//returns the pointer to location of the item
   return loc;
 }
