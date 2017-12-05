@@ -383,7 +383,7 @@ int main() {
 	if (strcmp(command, "EAST") == 0 && curr == r13 && vopen == false) { //If in bedroom and vault has not been opened
 	  cout << "There is a metal door that is locked. A pickaxe will not help" << endl;
 	  cont = false;//Prevents room transition
-	  legal = true;.//makes move valid
+	  legal = true;//makes move valid
 	}
 
 	if (strcmp(command, "NORTH") == 0 && curr == r15 ) { //If in last room Northbound through portal (WIN CON)
